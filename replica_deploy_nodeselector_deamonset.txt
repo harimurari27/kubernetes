@@ -126,4 +126,4 @@ my-ds-ndd8h   1/1     Running   0          21s   10.244.2.3     aks-agentpool-26
 my-ds-q98h2   1/1     Running   0          21s   10.244.3.12    aks-agentpool-26657641-vmss000000   <none>           <none>
 ns-pod        1/1     Running   0          82s   10.244.3.174   aks-agentpool-26657641-vmss000000   <none>           <none>
 pod1          1/1     Running   0          19m   10.244.1.132   aks-userpool-26657641-vmss000001    <none>           <none>
-PS /home/azureuser>
+PS /home/azureuser> this is kuber
