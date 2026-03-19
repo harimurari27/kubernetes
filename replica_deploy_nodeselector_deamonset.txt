@@ -1,0 +1,129 @@
+Requesting a Cloud Shell.Succeeded. 
+Connecting terminal...
+
+Welcome to Azure Cloud Shell
+
+Type "az" to use Azure CLI
+Type "help" to learn about Cloud Shell
+
+
+MOTD: Quickly edit, debug, and run your apps in VS Code for the Web - powered by Cloud Shell. No setup needed. Try it now: https://aka.ms/vscode-web-azure
+
+VERBOSE: Authenticating to Azure ...
+PS /home/azureuser> kubectl get nodes         
+NAME                                STATUS   ROLES    AGE   VERSION
+aks-agentpool-26657641-vmss000000   Ready    <none>   90m   v1.33.6
+aks-agentpool-26657641-vmss000001   Ready    <none>   90m   v1.33.6
+aks-userpool-26657641-vmss000000    Ready    <none>   90m   v1.33.6
+aks-userpool-26657641-vmss000001    Ready    <none>   90m   v1.33.6
+PS /home/azureuser> vi rs.yaml
+PS /home/azureuser> kubectl apply -f rs.yaml
+replicaset.apps/my-rs created
+PS /home/azureuser> kubectl get rs
+NAME    DESIRED   CURRENT   READY   AGE
+my-rs   3         3         3       6s
+PS /home/azureuser> kubectl get pods
+NAME          READY   STATUS    RESTARTS   AGE
+my-rs-dk6qw   1/1     Running   0          11s
+my-rs-r5tjz   1/1     Running   0          11s
+my-rs-rf85x   1/1     Running   0          11s
+pod1          1/1     Running   0          11m
+PS /home/azureuser> kubectl delete pod my-rs-dk6qw
+pod "my-rs-dk6qw" deleted from default namespace
+PS /home/azureuser> kubectl get pods              
+NAME          READY   STATUS    RESTARTS   AGE
+my-rs-5gwjc   1/1     Running   0          5s
+my-rs-r5tjz   1/1     Running   0          48s
+my-rs-rf85x   1/1     Running   0          48s
+pod1          1/1     Running   0          12m
+PS /home/azureuser> kubectl scale --replicas=5 rs my-rs
+replicaset.apps/my-rs scaled
+PS /home/azureuser> kubectl get rs                     
+NAME    DESIRED   CURRENT   READY   AGE
+my-rs   5         5         5       96s
+PS /home/azureuser> kubectl scale --replicas=2 rs my-rs
+replicaset.apps/my-rs scaled
+PS /home/azureuser> kubectl get rs                     
+NAME    DESIRED   CURRENT   READY   AGE
+my-rs   2         2         2       109s
+PS /home/azureuser> kubectl get pods                   
+NAME          READY   STATUS    RESTARTS   AGE
+my-rs-r5tjz   1/1     Running   0          114s
+my-rs-rf85x   1/1     Running   0          114s
+pod1          1/1     Running   0          13m
+PS /home/azureuser> kubectl delete rs my-rs       
+replicaset.apps "my-rs" deleted from default namespace
+PS /home/azureuser> kubectl get pods       
+NAME   READY   STATUS    RESTARTS   AGE
+pod1   1/1     Running   0          14m
+PS /home/azureuser> kubectl get rs         
+No resources found in default namespace.
+PS /home/azureuser> vi deploy.yaml
+PS /home/azureuser> kubectl apply -f deploy.yaml
+deployment.apps/my-deploy created
+PS /home/azureuser> kubectl get deploy          
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+my-deploy   3/3     3            3           9s
+PS /home/azureuser> kubectl get rs    
+NAME                   DESIRED   CURRENT   READY   AGE
+my-deploy-65d846d465   3         3         3       15s
+PS /home/azureuser> kubectl get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+my-deploy-65d846d465-9qpx8   1/1     Running   0          27s
+my-deploy-65d846d465-q4cpr   1/1     Running   0          27s
+my-deploy-65d846d465-zvpq7   1/1     Running   0          27s
+pod1                         1/1     Running   0          15m
+PS /home/azureuser> kubectl set image deployment my-deploy nginx=httpd
+deployment.apps/my-deploy image updated
+PS /home/azureuser> kubectl rollout status deployment my-deploy
+Waiting for deployment "my-deploy" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "my-deploy" rollout to finish: 1 old replicas are pending termination...
+deployment "my-deploy" successfully rolled out
+PS /home/azureuser> kubectl rollout history deployment my-deploy
+deployment.apps/my-deploy 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+PS /home/azureuser> kubectl rollout undo deployment my-deploy
+deployment.apps/my-deploy rolled back
+PS /home/azureuser> kubectl scale --replicas=5 deployment my-deploy
+deployment.apps/my-deploy scaled
+PS /home/azureuser> kubectl delete deployment my-deploy
+deployment.apps "my-deploy" deleted from default namespace
+PS /home/azureuser> kubectl get nodes                  
+NAME                                STATUS   ROLES    AGE   VERSION
+aks-agentpool-26657641-vmss000000   Ready    <none>   95m   v1.33.6
+aks-agentpool-26657641-vmss000001   Ready    <none>   95m   v1.33.6
+aks-userpool-26657641-vmss000000    Ready    <none>   95m   v1.33.6
+aks-userpool-26657641-vmss000001    Ready    <none>   95m   v1.33.6
+PS /home/azureuser> kubectl label node aks-agentpool-26657641-vmss000000 disk=ssd
+node/aks-agentpool-26657641-vmss000000 labeled
+PS /home/azureuser> kubectl get nodes --show-labels
+NAME                                STATUS   ROLES    AGE   VERSION   LABELS
+aks-agentpool-26657641-vmss000000   Ready    <none>   96m   v1.33.6   agentpool=agentpool,beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=Standard_D8ds_v5,beta.kubernetes.io/os=linux,disk=ssd,failure-domain.beta.kubernetes.io/region=centralus,failure-domain.beta.kubernetes.io/zone=0,kubernetes.azure.com/agentpool=agentpool,kubernetes.azure.com/azure-cni-overlay=true,kubernetes.azure.com/cluster=MC_CDPInterns-2473986-RG_k8cluster_centralus,kubernetes.azure.com/consolidated-additional-properties=cf153ebc-2212-11f1-a1df-7e6c12f9bff7,kubernetes.azure.com/ebpf-dataplane=cilium,kubernetes.azure.com/kubelet-identity-client-id=245c3264-60af-4102-bace-a152cfc86e78,kubernetes.azure.com/kubelet-serving-ca=cluster,kubernetes.azure.com/localdns-state=disabled,kubernetes.azure.com/mode=system,kubernetes.azure.com/network-name=aks-vnet-22686256,kubernetes.azure.com/network-resourcegroup=CDPInterns-2473986-RG,kubernetes.azure.com/network-stateless-cni=false,kubernetes.azure.com/network-subnet=aks-subnet,kubernetes.azure.com/network-subscription=540b7602-d4c7-41d9-ae81-9b1cfaa2f21d,kubernetes.azure.com/node-image-version=AKSUbuntu-2204gen2containerd-202602.13.5,kubernetes.azure.com/nodenetwork-vnetguid=434c3c44-d79e-4aaf-91cd-00b560fb29e5,kubernetes.azure.com/nodepool-type=VirtualMachineScaleSets,kubernetes.azure.com/os-sku-effective=Ubuntu2204,kubernetes.azure.com/os-sku-requested=Ubuntu,kubernetes.azure.com/os-sku=Ubuntu,kubernetes.azure.com/podnetwork-type=overlay,kubernetes.azure.com/role=agent,kubernetes.azure.com/sku-cpu=8,kubernetes.azure.com/sku-memory=32768,kubernetes.io/arch=amd64,kubernetes.io/hostname=aks-agentpool-26657641-vmss000000,kubernetes.io/os=linux,node.kubernetes.io/instance-type=Standard_D8ds_v5,topology.disk.csi.azure.com/zone=,topology.kubernetes.io/region=centralus,topology.kubernetes.io/zone=0
+aks-agentpool-26657641-vmss000001   Ready    <none>   96m   v1.33.6   agentpool=agentpool,beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=Standard_D8ds_v5,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=centralus,failure-domain.beta.kubernetes.io/zone=0,kubernetes.azure.com/agentpool=agentpool,kubernetes.azure.com/azure-cni-overlay=true,kubernetes.azure.com/cluster=MC_CDPInterns-2473986-RG_k8cluster_centralus,kubernetes.azure.com/consolidated-additional-properties=cf153ebc-2212-11f1-a1df-7e6c12f9bff7,kubernetes.azure.com/ebpf-dataplane=cilium,kubernetes.azure.com/kubelet-identity-client-id=245c3264-60af-4102-bace-a152cfc86e78,kubernetes.azure.com/kubelet-serving-ca=cluster,kubernetes.azure.com/localdns-state=disabled,kubernetes.azure.com/mode=system,kubernetes.azure.com/network-name=aks-vnet-22686256,kubernetes.azure.com/network-resourcegroup=CDPInterns-2473986-RG,kubernetes.azure.com/network-stateless-cni=false,kubernetes.azure.com/network-subnet=aks-subnet,kubernetes.azure.com/network-subscription=540b7602-d4c7-41d9-ae81-9b1cfaa2f21d,kubernetes.azure.com/node-image-version=AKSUbuntu-2204gen2containerd-202602.13.5,kubernetes.azure.com/nodenetwork-vnetguid=434c3c44-d79e-4aaf-91cd-00b560fb29e5,kubernetes.azure.com/nodepool-type=VirtualMachineScaleSets,kubernetes.azure.com/os-sku-effective=Ubuntu2204,kubernetes.azure.com/os-sku-requested=Ubuntu,kubernetes.azure.com/os-sku=Ubuntu,kubernetes.azure.com/podnetwork-type=overlay,kubernetes.azure.com/role=agent,kubernetes.azure.com/sku-cpu=8,kubernetes.azure.com/sku-memory=32768,kubernetes.io/arch=amd64,kubernetes.io/hostname=aks-agentpool-26657641-vmss000001,kubernetes.io/os=linux,node.kubernetes.io/instance-type=Standard_D8ds_v5,topology.disk.csi.azure.com/zone=,topology.kubernetes.io/region=centralus,topology.kubernetes.io/zone=0
+aks-userpool-26657641-vmss000000    Ready    <none>   96m   v1.33.6   agentpool=userpool,beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=Standard_D8ds_v5,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=centralus,failure-domain.beta.kubernetes.io/zone=0,kubernetes.azure.com/agentpool=userpool,kubernetes.azure.com/azure-cni-overlay=true,kubernetes.azure.com/cluster=MC_CDPInterns-2473986-RG_k8cluster_centralus,kubernetes.azure.com/consolidated-additional-properties=cf154904-2212-11f1-a1df-7e6c12f9bff7,kubernetes.azure.com/ebpf-dataplane=cilium,kubernetes.azure.com/kubelet-identity-client-id=245c3264-60af-4102-bace-a152cfc86e78,kubernetes.azure.com/kubelet-serving-ca=cluster,kubernetes.azure.com/localdns-state=disabled,kubernetes.azure.com/mode=user,kubernetes.azure.com/network-name=aks-vnet-22686256,kubernetes.azure.com/network-resourcegroup=CDPInterns-2473986-RG,kubernetes.azure.com/network-stateless-cni=false,kubernetes.azure.com/network-subnet=aks-subnet,kubernetes.azure.com/network-subscription=540b7602-d4c7-41d9-ae81-9b1cfaa2f21d,kubernetes.azure.com/node-image-version=AKSUbuntu-2204gen2containerd-202602.13.5,kubernetes.azure.com/nodenetwork-vnetguid=434c3c44-d79e-4aaf-91cd-00b560fb29e5,kubernetes.azure.com/nodepool-type=VirtualMachineScaleSets,kubernetes.azure.com/os-sku-effective=Ubuntu2204,kubernetes.azure.com/os-sku-requested=Ubuntu,kubernetes.azure.com/os-sku=Ubuntu,kubernetes.azure.com/podnetwork-type=overlay,kubernetes.azure.com/role=agent,kubernetes.azure.com/sku-cpu=8,kubernetes.azure.com/sku-memory=32768,kubernetes.io/arch=amd64,kubernetes.io/hostname=aks-userpool-26657641-vmss000000,kubernetes.io/os=linux,node.kubernetes.io/instance-type=Standard_D8ds_v5,topology.disk.csi.azure.com/zone=,topology.kubernetes.io/region=centralus,topology.kubernetes.io/zone=0
+aks-userpool-26657641-vmss000001    Ready    <none>   96m   v1.33.6   agentpool=userpool,beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=Standard_D8ds_v5,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=centralus,failure-domain.beta.kubernetes.io/zone=0,kubernetes.azure.com/agentpool=userpool,kubernetes.azure.com/azure-cni-overlay=true,kubernetes.azure.com/cluster=MC_CDPInterns-2473986-RG_k8cluster_centralus,kubernetes.azure.com/consolidated-additional-properties=cf154904-2212-11f1-a1df-7e6c12f9bff7,kubernetes.azure.com/ebpf-dataplane=cilium,kubernetes.azure.com/kubelet-identity-client-id=245c3264-60af-4102-bace-a152cfc86e78,kubernetes.azure.com/kubelet-serving-ca=cluster,kubernetes.azure.com/localdns-state=disabled,kubernetes.azure.com/mode=user,kubernetes.azure.com/network-name=aks-vnet-22686256,kubernetes.azure.com/network-resourcegroup=CDPInterns-2473986-RG,kubernetes.azure.com/network-stateless-cni=false,kubernetes.azure.com/network-subnet=aks-subnet,kubernetes.azure.com/network-subscription=540b7602-d4c7-41d9-ae81-9b1cfaa2f21d,kubernetes.azure.com/node-image-version=AKSUbuntu-2204gen2containerd-202602.13.5,kubernetes.azure.com/nodenetwork-vnetguid=434c3c44-d79e-4aaf-91cd-00b560fb29e5,kubernetes.azure.com/nodepool-type=VirtualMachineScaleSets,kubernetes.azure.com/os-sku-effective=Ubuntu2204,kubernetes.azure.com/os-sku-requested=Ubuntu,kubernetes.azure.com/os-sku=Ubuntu,kubernetes.azure.com/podnetwork-type=overlay,kubernetes.azure.com/role=agent,kubernetes.azure.com/sku-cpu=8,kubernetes.azure.com/sku-memory=32768,kubernetes.io/arch=amd64,kubernetes.io/hostname=aks-userpool-26657641-vmss000001,kubernetes.io/os=linux,node.kubernetes.io/instance-type=Standard_D8ds_v5,topology.disk.csi.azure.com/zone=,topology.kubernetes.io/region=centralus,topology.kubernetes.io/zone=0
+PS /home/azureuser> vi nodeselector-pod.yaml
+PS /home/azureuser> kubectl apply -f nodeselector-pod.yaml
+pod/ns-pod created
+PS /home/azureuser> kubectl get pods -o wide
+NAME     READY   STATUS    RESTARTS   AGE   IP             NODE                                NOMINATED NODE   READINESS GATES
+ns-pod   1/1     Running   0          10s   10.244.3.174   aks-agentpool-26657641-vmss000000   <none>           <none>
+pod1     1/1     Running   0          17m   10.244.1.132   aks-userpool-26657641-vmss000001    <none>           <none>
+PS /home/azureuser> vi ds.yaml              
+PS /home/azureuser> kubectl apply -f ds.yaml              
+daemonset.apps/my-ds created
+PS /home/azureuser> kubectl get ds          
+NAME    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+my-ds   4         4         4       4            4           <none>          13s
+PS /home/azureuser> kubectl get pods -o wide
+NAME          READY   STATUS    RESTARTS   AGE   IP             NODE                                NOMINATED NODE   READINESS GATES
+my-ds-2rslh   1/1     Running   0          21s   10.244.1.78    aks-userpool-26657641-vmss000001    <none>           <none>
+my-ds-9bhhm   1/1     Running   0          21s   10.244.0.25    aks-userpool-26657641-vmss000000    <none>           <none>
+my-ds-ndd8h   1/1     Running   0          21s   10.244.2.3     aks-agentpool-26657641-vmss000001   <none>           <none>
+my-ds-q98h2   1/1     Running   0          21s   10.244.3.12    aks-agentpool-26657641-vmss000000   <none>           <none>
+ns-pod        1/1     Running   0          82s   10.244.3.174   aks-agentpool-26657641-vmss000000   <none>           <none>
+pod1          1/1     Running   0          19m   10.244.1.132   aks-userpool-26657641-vmss000001    <none>           <none>
+PS /home/azureuser>
